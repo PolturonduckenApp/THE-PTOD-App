@@ -2,7 +2,7 @@
 //  AppDelegate.swift
 //  PTOD
 //
-//  Created by Andrew Turley on 3/10/16.
+//  Created by Andrew Turley on 3/10/16. (also Ryan)
 //  Copyright © 2016 Polturonduken. All rights reserved.
 //
 
