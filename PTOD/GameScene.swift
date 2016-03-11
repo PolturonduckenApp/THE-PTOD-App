@@ -12,11 +12,12 @@ class GameScene: SKScene {
     let orangutan = SKSpriteNode(imageNamed: "Orangutan")
     var vietcong1 = SKSpriteNode(imageNamed: "Vietcong1")
     var vietcong2 = SKSpriteNode(imageNamed: "Vietcong2")
+    var count = 0
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Welcome to the wonderful world of Oranguraton"
+        myLabel.text = "Welcome to the wonderful world of Oranguratta"
         myLabel.fontSize = 35
         myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
         
@@ -49,6 +50,12 @@ class GameScene: SKScene {
     }
    
     override func update(currentTime: CFTimeInterval) {
-        vietcong1 = SKSpriteNode(imageNamed: "Vietcong2")
+        if count % 10 == 0 {
+            vietcong1.texture = SKTexture(imageNamed: "Vietcong2")
+        }
+        else if count % 5 == 0{
+            vietcong1.texture = SKTexture(imageNamed: "Vietcong1")
+        }
+        count++
     }
 }
