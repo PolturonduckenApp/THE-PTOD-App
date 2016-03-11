@@ -9,21 +9,29 @@
 import SpriteKit
 
 class GameScene: SKScene {
-    let sprite = SKSpriteNode(imageNamed:"Orangutan")
+    let orangutan = SKSpriteNode(imageNamed: "Orangutan")
+    var vietcong1 = SKSpriteNode(imageNamed: "Vietcong1")
+    var vietcong2 = SKSpriteNode(imageNamed: "Vietcong2")
+    var count = 0
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Welcome to the wonderful world of Oranguraton"
-        myLabel.fontSize = 45
+        myLabel.text = "Welcome to the wonderful world of Oranguratta"
+        myLabel.fontSize = 35
         myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
         
-        sprite.xScale = 0.5
-        sprite.yScale = 0.5
+        orangutan.xScale = 0.5
+        orangutan.yScale = 0.5
         
-        sprite.position.x = 100
-        sprite.position.y = 100
+        orangutan.position.x = 100
+        orangutan.position.y = 100
         
-        self.addChild(sprite)
+        vietcong1.position.x = 500
+        vietcong1.position.y = 100
+        
+        self.addChild(vietcong1)
+        self.addChild(orangutan)
         self.addChild(myLabel)
     }
     
@@ -33,15 +41,21 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.locationInNode(self)
             
-            sprite.position.x = location.x
+            orangutan.position.x = location.x
             
             let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
             
-            sprite.runAction(SKAction.repeatActionForever(action))
+            orangutan.runAction(SKAction.repeatActionForever(action))
         }
     }
    
     override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
+        if count % 10 == 0 {
+            vietcong1.texture = SKTexture(imageNamed: "Vietcong2")
+        }
+        else if count % 5 == 0{
+            vietcong1.texture = SKTexture(imageNamed: "Vietcong1")
+        }
+        count++
     }
 }
