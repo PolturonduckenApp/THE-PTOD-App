@@ -2,7 +2,7 @@
 //  GameScene.swift
 //  PTOD
 //
-//  Created by Andrew Turley on 3/10/16.
+//  Created by Andrew Turley & the FFroy on 3/11/16.
 //  Copyright (c) 2016 Polturonduken. All rights reserved.
 //
 
@@ -17,14 +17,14 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Welcome to the wonderful world of Oranguratta"
+        myLabel.text = "Tropical Oranguratta"
         myLabel.fontSize = 35
         myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
         
         orangutan.xScale = 0.5
         orangutan.yScale = 0.5
         
-        orangutan.position.x = 100
+        orangutan.position.x = 102
         orangutan.position.y = 100
         
         vietcong1.position.x = 500
@@ -41,15 +41,19 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.locationInNode(self)
             
+            orangutan.position.y = location.y - 20 //interesting...
             orangutan.position.x = location.x
             
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
+            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:10) //testing longer duration
             
             orangutan.runAction(SKAction.repeatActionForever(action))
         }
     }
    
     override func update(currentTime: CFTimeInterval) {
+        if count % 13 == 0 {
+            vietcong1.texture = SKTexture(imageNamed: "Orangutan") //gives it that small chance of friendly fire
+        }
         if count % 10 == 0 {
             vietcong1.texture = SKTexture(imageNamed: "Vietcong2")
         }
