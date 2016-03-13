@@ -11,7 +11,6 @@ import SpriteKit
 class GameScene: SKScene {
     let orangutan = SKSpriteNode(imageNamed: "Orangutan")
     var vietcong1 = SKSpriteNode(imageNamed: "Vietcong1")
-    var vietcong2 = SKSpriteNode(imageNamed: "Vietcong2")
     var count = 0
     
     override func didMoveToView(view: SKView) {
@@ -51,9 +50,6 @@ class GameScene: SKScene {
     }
    
     override func update(currentTime: CFTimeInterval) {
-        if count % 13 == 0 {
-            vietcong1.texture = SKTexture(imageNamed: "Orangutan") //gives it that small chance of friendly fire
-        }
         if count % 10 == 0 {
             vietcong1.texture = SKTexture(imageNamed: "Vietcong2")
         }
