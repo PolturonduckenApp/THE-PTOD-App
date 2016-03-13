@@ -40,7 +40,6 @@ class GameScene: SKScene {
         for touch in touches {
             let location = touch.locationInNode(self)
             
-            orangutan.position.y = location.y - 20 //interesting...
             orangutan.position.x = location.x
             
             let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:10) //testing longer duration
