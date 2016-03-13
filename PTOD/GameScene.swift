@@ -10,11 +10,11 @@ import SpriteKit
 
 class GameScene: SKScene {
     let orangutan = SKSpriteNode(imageNamed: "Orangutan")
-    var vietcong1 = SKSpriteNode(imageNamed: "Vietcong1")
+    var soldier = SKSpriteNode(imageNamed: "Soldier1")
     var count = 0
+    var targetLocation : CGPoint!
     
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
         myLabel.text = "Tropical Oranguratta"
         myLabel.fontSize = 35
@@ -26,35 +26,43 @@ class GameScene: SKScene {
         orangutan.position.x = 102
         orangutan.position.y = 100
         
-        vietcong1.position.x = 500
-        vietcong1.position.y = 100
+        soldier.position.x = 500
+        soldier.position.y = 100
         
-        self.addChild(vietcong1)
+        targetLocation = orangutan.position
+        
+        self.addChild(soldier)
         self.addChild(orangutan)
         self.addChild(myLabel)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-       /* Called when a touch begins */
-        
         for touch in touches {
-            let location = touch.locationInNode(self)
-            
-            orangutan.position.x = location.x
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:10) //testing longer duration
-            
-            orangutan.runAction(SKAction.repeatActionForever(action))
+            targetLocation = touch.locationInNode(self)
+        }
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        for touch in touches {
+            targetLocation = touch.locationInNode(self)
         }
     }
    
     override func update(currentTime: CFTimeInterval) {
         if count % 10 == 0 {
-            vietcong1.texture = SKTexture(imageNamed: "Vietcong2")
+            soldier.texture = SKTexture(imageNamed: "Soldier2")
         }
         else if count % 5 == 0{
-            vietcong1.texture = SKTexture(imageNamed: "Vietcong1")
+            soldier.texture = SKTexture(imageNamed: "Soldier1")
         }
         count++
+        
+        
+        if orangutan.position.x + 5 < targetLocation.x {
+            orangutan.position.x += 5
+        }
+        else if orangutan.position.x - 5 > targetLocation.x {
+            orangutan.position.x -= 5
+        }
     }
 }
