@@ -11,7 +11,6 @@ import SpriteKit
 class GameScene: SKScene {
     let orangutan = SKSpriteNode(imageNamed: "Orangutan")
     var vietcong1 = SKSpriteNode(imageNamed: "Vietcong1")
-    var vietcong2 = SKSpriteNode(imageNamed: "Vietcong2")
     var count = 0
     
     override func didMoveToView(view: SKView) {
