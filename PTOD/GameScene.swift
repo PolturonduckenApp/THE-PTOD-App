@@ -13,6 +13,9 @@ class GameScene: SKScene {
     var soldier = SKSpriteNode(imageNamed: "Soldier1")
     var count = 0
     var targetLocation : CGPoint!
+    let screenSize: CGRect = UIScreen.mainScreen().bounds
+    var screenWidth : CGFloat!
+    var screenHeight : CGFloat!
     
     override func didMoveToView(view: SKView) {
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
@@ -28,6 +31,9 @@ class GameScene: SKScene {
         
         soldier.position.x = 500
         soldier.position.y = 100
+        
+        screenWidth = screenSize.width
+        screenHeight = screenSize.height
         
         targetLocation = orangutan.position
         
@@ -54,6 +60,11 @@ class GameScene: SKScene {
         }
         else if count % 5 == 0{
             soldier.texture = SKTexture(imageNamed: "Soldier1")
+        }
+        
+        soldier.position.y -= 10
+        if soldier.position.y < 0 {
+            soldier.position.y = screenSize.height + soldier.size.height
         }
         count++
         
