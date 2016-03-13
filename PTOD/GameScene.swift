@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     let orangutan = SKSpriteNode(imageNamed: "Orangutan")
     var soldier = SKSpriteNode(imageNamed: "Soldier1")
     var count = 0
@@ -16,8 +16,12 @@ class GameScene: SKScene {
     let screenSize: CGRect = UIScreen.mainScreen().bounds
     var screenWidth : CGFloat!
     var screenHeight : CGFloat!
+    let orangutanCategory : UInt32 = 0x1 << 0
+    let soldierCategory : UInt32 = 0x1 << 1
     
     override func didMoveToView(view: SKView) {
+        physicsWorld.contactDelegate = self
+        
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
         myLabel.text = "Tropical Oranguratta"
         myLabel.fontSize = 35
@@ -29,8 +33,21 @@ class GameScene: SKScene {
         orangutan.position.x = 102
         orangutan.position.y = 100
         
+        orangutan.physicsBody = SKPhysicsBody(circleOfRadius: 50)
+        orangutan.physicsBody!.dynamic = false
+        
         soldier.position.x = 500
         soldier.position.y = 100
+        soldier.physicsBody = SKPhysicsBody(circleOfRadius: 50)
+        soldier.physicsBody!.dynamic = true
+        
+        orangutan.physicsBody!.categoryBitMask = orangutanCategory
+        orangutan.physicsBody!.contactTestBitMask = soldierCategory
+        orangutan.physicsBody!.collisionBitMask = soldierCategory
+        
+        soldier.physicsBody?.categoryBitMask = soldierCategory
+        soldier.physicsBody?.contactTestBitMask = orangutanCategory
+        soldier.physicsBody?.collisionBitMask = orangutanCategory
         
         screenWidth = screenSize.width
         screenHeight = screenSize.height
@@ -53,14 +70,18 @@ class GameScene: SKScene {
             targetLocation = touch.locationInNode(self)
         }
     }
+    
+    func didBeginContact(contact: SKPhysicsContact) {
+        print("CONTACT")
+    }
    
     override func update(currentTime: CFTimeInterval) {
-        if count % 10 == 0 {
-            soldier.texture = SKTexture(imageNamed: "Soldier2")
-        }
-        else if count % 5 == 0{
-            soldier.texture = SKTexture(imageNamed: "Soldier1")
-        }
+//        if count % 10 == 0 {
+//            soldier.texture = SKTexture(imageNamed: "Soldier2")
+//        }
+//        else if count % 5 == 0{
+//            soldier.texture = SKTexture(imageNamed: "Soldier1")
+//        }
         
         soldier.position.y -= 10
         if soldier.position.y < 0 {
