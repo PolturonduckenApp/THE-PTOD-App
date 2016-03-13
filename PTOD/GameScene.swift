@@ -65,6 +65,7 @@ class GameScene: SKScene {
         soldier.position.y -= 10
         if soldier.position.y < 0 {
             soldier.position.y = screenSize.height + soldier.size.height
+            soldier.position.x = CGFloat(arc4random_uniform(UInt32(screenWidth!)))
         }
         count++
         
