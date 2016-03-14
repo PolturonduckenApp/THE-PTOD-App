@@ -9,8 +9,8 @@
 import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
-    let orangutan = SKSpriteNode(imageNamed: "Orangutan")
-    var soldier = SKSpriteNode(imageNamed: "Soldier1")
+    var orangutan = SKSpriteNode(imageNamed: "Orangutan")
+    var soldier : [SKSpriteNode] = []
     var count = 0
     var targetLocation : CGPoint!
     let screenSize: CGRect = UIScreen.mainScreen().bounds
@@ -22,7 +22,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     override func didMoveToView(view: SKView) {
         physicsWorld.contactDelegate = self
-        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+//                        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         
         worldName.text = "Level 1: Tropical Kkjuy"
         worldName.fontSize = 35
@@ -31,33 +31,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         orangutan.xScale = 0.5
         orangutan.yScale = 0.5
         
-        orangutan.position.x = 102
-        orangutan.position.y = 100
+        orangutan.position.x = 100
+        orangutan.position.y = 300
         
         orangutan.physicsBody = SKPhysicsBody(circleOfRadius: 50)
         orangutan.physicsBody!.dynamic = false
-        
-        soldier.position.x = 500
-        soldier.position.y = 100
-        soldier.physicsBody = SKPhysicsBody(circleOfRadius: 50)
-        soldier.physicsBody!.dynamic = true
         
         orangutan.physicsBody!.categoryBitMask = orangutanCategory
         orangutan.physicsBody!.contactTestBitMask = soldierCategory
         orangutan.physicsBody!.collisionBitMask = soldierCategory
         
-        soldier.physicsBody?.categoryBitMask = soldierCategory
-        soldier.physicsBody?.contactTestBitMask = orangutanCategory
-        soldier.physicsBody?.collisionBitMask = orangutanCategory
+        for var i in 0..<5 {
+            soldier.append(SKSpriteNode(imageNamed: "Soldier1"))
+            soldier[i].position.x = 100 * CGFloat(i)
+            soldier[i].position.y = 100 * CGFloat(i)
+            soldier[i].physicsBody = SKPhysicsBody(circleOfRadius: 50)
+            soldier[i].physicsBody!.dynamic = true
+            
+            soldier[i].physicsBody?.categoryBitMask = soldierCategory
+            soldier[i].physicsBody?.contactTestBitMask = orangutanCategory
+            soldier[i].physicsBody?.collisionBitMask = orangutanCategory
+            
+            self.addChild(soldier[i])
+        }
         
         screenWidth = screenSize.width
         screenHeight = screenSize.height
         
         targetLocation = orangutan.position
         
-        self.addChild(soldier)
-        self.addChild(orangutan)
         self.addChild(worldName)
+        self.addChild(orangutan)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -75,23 +79,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didBeginContact(contact: SKPhysicsContact) {
         print("CONTACT")
     }
-   
+    
     override func update(currentTime: CFTimeInterval) {
         if worldName.alpha > 0 {
             worldName.alpha -= 0.03
         }
         
-        if count % 10 == 0 {
-            soldier.texture = SKTexture(imageNamed: "Soldier2")
-        }
-        else if count % 5 == 0{
-            soldier.texture = SKTexture(imageNamed: "Soldier1")
-        }
-        
-        soldier.position.y -= 10
-        if soldier.position.y < 0 {
-            soldier.position.y = screenSize.height + soldier.size.height
-            soldier.position.x = CGFloat(arc4random_uniform(UInt32(screenWidth!)))
+        for var i in 0..<5 {
+            if count % 10 == 0 {
+                soldier[i].texture = SKTexture(imageNamed: "Soldier2")
+            }
+            else if count % 5 == 0{
+                soldier[i].texture = SKTexture(imageNamed: "Soldier1")
+            }
+            
+            soldier[i].position.y -= 10
+            if soldier[i].position.y < 0 {
+                soldier[i].position.y = screenSize.height + soldier[i].size.height
+                soldier[i].position.x = CGFloat(arc4random_uniform(UInt32(screenWidth!)))
+            }
         }
         count++
         
