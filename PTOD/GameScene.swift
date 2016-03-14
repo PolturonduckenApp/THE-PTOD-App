@@ -24,7 +24,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         
-        worldName.text = "Tropical Oranguratta"
+        worldName.text = "Level 1: Tropical Kkjuy"
         worldName.fontSize = 35
         worldName.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
         
