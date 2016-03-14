@@ -7,6 +7,6 @@ Centered on Earth, aka [Oranguratta](https://github.com/PolturonduckenApp/THE-PT
 @CounterfeitLlama: 
 Andrew Turley<br />
 @DataManiac18:
-P.R. Onffroy<br />
+P. R. Onffroy<br />
 @NauticalTooth27:
 Ryan Polhemus
