@@ -21,7 +21,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let worldName = SKLabelNode(fontNamed:"Chalkduster")
     var healthLeft = 100
     
-    var healthBar = SKSpriteNode(color:SKColor .yellowColor(), size: CGSize(width: healthLeft * 6, height: 30))
+    var healthBar = SKSpriteNode(color:SKColor .yellowColor(), size: CGSize(width: 600, height: 30))
     
     override func didMoveToView(view: SKView) {
         physicsWorld.contactDelegate = self
@@ -86,7 +86,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func didBeginContact(contact: SKPhysicsContact) {
         healthLeft -= 1
-        //healthBar.width = healthLeft * 7 //no idea if this works, im working in browser right now
+        healthBar.removeFromParent()
+        healthBar = SKSpriteNode(color:SKColor .redColor(), size: CGSize(width: healthLeft * 6, height: 30))
+        self.addChild(healthBar)
+        healthBar.position = CGPointMake(self.frame.size.width / 3, self.frame.size.height / 1.05)
+        healthBar.anchorPoint = CGPointMake(0.0, 0.5)
+        healthBar.zPosition = 4
     }
     
     override func update(currentTime: CFTimeInterval) {
