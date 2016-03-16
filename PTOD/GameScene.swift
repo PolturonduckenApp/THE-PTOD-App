@@ -19,10 +19,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let orangutanCategory : UInt32 = 0x1 << 0
     let soldierCategory : UInt32 = 0x1 << 1
     let worldName = SKLabelNode(fontNamed:"Chalkduster")
+    var healthLeft = 100
+    
+    var healthBar = SKSpriteNode(color:SKColor .yellowColor(), size: CGSize(width: 600, height: 30))
     
     override func didMoveToView(view: SKView) {
         physicsWorld.contactDelegate = self
-//                        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        physicsWorld.gravity = CGVector(dx: 0, dy: 0)
+        
+        healthBar.position = CGPointMake(self.frame.size.width / 3, self.frame.size.height / 1.05)
+        healthBar.anchorPoint = CGPointMake(0.0, 0.5)
+        healthBar.zPosition = 4
         
         worldName.text = "Level 1: Tropical Kkjuy"
         worldName.fontSize = 35
@@ -62,6 +69,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         self.addChild(worldName)
         self.addChild(orangutan)
+        self.addChild(healthBar)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -77,7 +85,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBeginContact(contact: SKPhysicsContact) {
-        print("CONTACT")
+        healthLeft -= 1
+        healthBar.removeFromParent()
+        healthBar = SKSpriteNode(color:SKColor .redColor(), size: CGSize(width: healthLeft * 6, height: 30))
+        self.addChild(healthBar)
+        healthBar.position = CGPointMake(self.frame.size.width / 3, self.frame.size.height / 1.05)
+        healthBar.anchorPoint = CGPointMake(0.0, 0.5)
+        healthBar.zPosition = 4
     }
     
     override func update(currentTime: CFTimeInterval) {
