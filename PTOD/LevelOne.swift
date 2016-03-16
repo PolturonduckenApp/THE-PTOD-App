@@ -1,14 +1,15 @@
 //
-//  GameScene.swift
+//  LevelOne.swift
 //  PTOD
 //
-//  Created by Andrew Turley & the FFroy on 3/11/16.
-//  Copyright (c) 2016 Polturonduken. All rights reserved.
+//  Created by Andrew Turley on 3/16/16.
+//  Copyright © 2016 Polturonduken. All rights reserved.
 //
 
+import Foundation
 import SpriteKit
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class LevelOne: SKScene, SKPhysicsContactDelegate {
     var orangutan = SKSpriteNode(imageNamed: "Orangutan")
     var soldier : [SKSpriteNode] = []
     var count = 0
@@ -20,7 +21,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let soldierCategory : UInt32 = 0x1 << 1
     let worldName = SKLabelNode(fontNamed:"Chalkduster")
     var healthLeft = 100
-    var moveRight = false
     
     var healthBar = SKSpriteNode(color:SKColor .yellowColor(), size: CGSize(width: 600, height: 30))
     
@@ -73,17 +73,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(healthBar)
     }
     
+    //    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    //        for touch in touches {
+    //            targetLocation = touch.locationInNode(self)
+    //        }
+    //    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
-            let location = touch.locationInNode(self)
-            if self.nodeAtPoint(location).name == "LevelOneButton" {
-                let transition = SKTransition.revealWithDirection(.Down, duration: 1.0)
-                
-                let levelOne = LevelOne(size: scene!.size)
-                levelOne.scaleMode = .AspectFill
-                
-                scene?.view?.presentScene(levelOne, transition: transition)
-            }
+            targetLocation = touch.locationInNode(self)
+        }
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        for touch in touches {
+            targetLocation = touch.locationInNode(self)
         }
     }
     
@@ -126,17 +130,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         count++
         
         
-        if orangutan.position.x + 7 < screenWidth && moveRight {
+        if orangutan.position.x + 7 < targetLocation.x {
             orangutan.position.x += 7
         }
-        else if orangutan.position.x - 7 > 0 && !moveRight {
+        else if orangutan.position.x - 7 > targetLocation.x {
             orangutan.position.x -= 7
-        }
-        else if orangutan.position.x + 7 > screenWidth {
-            moveRight = false
-        }
-        else if orangutan.position.x - 7 < 0 {
-            moveRight = true
         }
     }
 }
