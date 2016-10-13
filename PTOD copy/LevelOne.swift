@@ -1,14 +1,17 @@
 //
-//  GameScene.swift
+//  LevelOne.swift
 //  PTOD
 //
-//  Created by Andrew Turley & the FFroy on 3/11/16.
-//  Copyright (c) 2016 Polturonduken. All rights reserved.
+//  Created by Andrew Turley on 3/16/16.
+//  Copyright © 2016 Polturonduken. All rights reserved.
 //
 
+import Foundation
 import SpriteKit
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+var finishTime = 0
+
+class LevelOne: SKScene, SKPhysicsContactDelegate {
     var orangutan = SKSpriteNode(imageNamed: "Orangutan")
     var soldier : [SKSpriteNode] = []
     var count = 0
@@ -19,8 +22,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let orangutanCategory : UInt32 = 0x1 << 0
     let soldierCategory : UInt32 = 0x1 << 1
     let worldName = SKLabelNode(fontNamed:"Chalkduster")
-    var healthLeft = 100
+    let timeLabel = SKLabelNode(fontNamed:"Chalkduster")
+    var healthLeft = 3
+    var hearts : [SKSpriteNode] = []
+    var moveLeft = false
     var moveRight = false
+    var timer = NSTimer()
+    var countTime = 0
     
     var healthBar = SKSpriteNode(color:SKColor .yellowColor(), size: CGSize(width: 600, height: 30))
     
@@ -28,13 +36,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         physicsWorld.gravity = CGVector(dx: 0, dy: 0)
         
-        healthBar.position = CGPointMake(self.frame.size.width / 3, self.frame.size.height / 1.05)
-        healthBar.anchorPoint = CGPointMake(0.0, 0.5)
-        healthBar.zPosition = 4
+        screenWidth = screenSize.width
+        screenHeight = screenSize.height
         
         worldName.text = "Level 1: Tropical Kkjuy"
         worldName.fontSize = 35
         worldName.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
+        timeLabel.text = "0"
+        timeLabel.fontSize = 35
+        timeLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:screenHeight - 50)
         
         orangutan.xScale = 0.2
         orangutan.yScale = 0.2
@@ -53,7 +63,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             soldier.append(SKSpriteNode(imageNamed: "Vietcong"))
             soldier[i].position.x = 100 * CGFloat(i)
             soldier[i].position.y = 100 * CGFloat(i)
-            soldier[i].physicsBody = SKPhysicsBody(circleOfRadius: 50)
+            soldier[i].physicsBody = SKPhysicsBody(circleOfRadius: 70)
             soldier[i].physicsBody!.dynamic = true
             soldier[i].xScale = 0.3
             soldier[i].yScale = 0.3
@@ -65,45 +75,90 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.addChild(soldier[i])
         }
         
-        screenWidth = screenSize.width
-        screenHeight = screenSize.height
+        hearts.append(SKSpriteNode(imageNamed: "heart"))
+        hearts[0].position.x = 50
+        hearts[0].position.y = screenHeight - 80
+        hearts[0].xScale = 0.1
+        hearts[0].yScale = 0.1
+        hearts.append(SKSpriteNode(imageNamed: "heart"))
+        hearts[1].position.x = 150
+        hearts[1].position.y = screenHeight - 80
+        hearts[1].xScale = 0.1
+        hearts[1].yScale = 0.1
+        hearts.append(SKSpriteNode(imageNamed: "heart"))
+        hearts[2].position.x = 250
+        hearts[2].position.y = screenHeight - 80
+        hearts[2].xScale = 0.1
+        hearts[2].yScale = 0.1
         
         targetLocation = orangutan.position
         
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target:self, selector: Selector("updateTimer"), userInfo: nil, repeats: true)
+        
         self.addChild(worldName)
+        self.addChild(timeLabel)
         self.addChild(orangutan)
-        self.addChild(healthBar)
+        self.addChild(hearts[0])
+        self.addChild(hearts[1])
+        self.addChild(hearts[2])
+    }
+    
+    func updateTimer() {
+        countTime = countTime + 1
+        timeLabel.text = "Time: \(countTime)"
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch in touches {
-            let location = touch.locationInNode(self)
-            if self.nodeAtPoint(location).name == "LevelOneButton" {
-                let transition = SKTransition.revealWithDirection(.Down, duration: 1.0)
-                
-                let levelOne = LevelOne(size: scene!.size)
-                levelOne.scaleMode = .AspectFill
-                
-                scene?.view?.presentScene(levelOne, transition: transition)
+            targetLocation = touch.locationInNode(self)
+            if targetLocation.x < screenWidth / 2 {
+                moveLeft = true
+                moveRight = false
+            }
+            else {
+                moveRight = true
+                moveLeft = false
             }
         }
     }
     
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        for touch in touches {
+            targetLocation = touch.locationInNode(self)
+            if targetLocation.x < screenWidth / 2 {
+                moveLeft = true
+                moveRight = false
+            }
+            else {
+                moveRight = true
+                moveLeft = false
+            }
+        }
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        moveLeft = false
+        moveRight = false
+    }
+    
     func didBeginContact(contact: SKPhysicsContact) {
-        healthLeft -= 1
-        healthBar.removeFromParent()
-        healthBar = SKSpriteNode(color:SKColor .redColor(), size: CGSize(width: healthLeft * 6, height: 30))
-        self.addChild(healthBar)
-        healthBar.position = CGPointMake(self.frame.size.width / 3, self.frame.size.height / 1.05)
-        healthBar.anchorPoint = CGPointMake(0.0, 0.5)
-        healthBar.zPosition = 4
-        if healthLeft == 0 {
+        healthLeft = healthLeft - 1
+        hearts[healthLeft].alpha = 0
+        
+        if healthLeft <= 0 {
             gameOver()
         }
     }
     
     func gameOver() {
+        finishTime = countTime
+        let transition = SKTransition.revealWithDirection(.Down, duration: 1.0)
         
+        let gameOver = GameOver(size: scene!.size)
+        gameOver.scaleMode = .AspectFill
+        
+        scene?.view?.presentScene(gameOver, transition: transition)
     }
     
     override func update(currentTime: CFTimeInterval) {
@@ -128,17 +183,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         count += 1
         
         
-        if orangutan.position.x + 7 < screenWidth && moveRight {
+        if moveRight == true && orangutan.position.x < screenWidth {
             orangutan.position.x += 7
         }
-        else if orangutan.position.x - 7 > 0 && !moveRight {
+        else if moveLeft == true && orangutan.position.x > 0 {
             orangutan.position.x -= 7
-        }
-        else if orangutan.position.x + 7 > screenWidth {
-            moveRight = false
-        }
-        else if orangutan.position.x - 7 < 0 {
-            moveRight = true
         }
     }
 }
