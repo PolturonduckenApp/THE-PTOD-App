@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		044DEFE11DB00EF400CD9B51 /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044DEFE01DB00EF400CD9B51 /* GameOver.swift */; };
 		044DEFE31DB00F1F00CD9B51 /* LevelOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044DEFE21DB00F1F00CD9B51 /* LevelOne.swift */; };
 		04ADCE101C92174E0039F6ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ADCE0F1C92174E0039F6ED /* AppDelegate.swift */; };
 		04ADCE121C92174E0039F6ED /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 04ADCE111C92174E0039F6ED /* GameScene.sks */; };
@@ -19,7 +18,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		044DEFE01DB00EF400CD9B51 /* GameOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameOver.swift; path = ../GameOver.swift; sourceTree = "<group>"; };
 		044DEFE21DB00F1F00CD9B51 /* LevelOne.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelOne.swift; sourceTree = "<group>"; };
 		04ADCE0C1C92174E0039F6ED /* PTOD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PTOD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04ADCE0F1C92174E0039F6ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,7 +66,6 @@
 				044DEFE21DB00F1F00CD9B51 /* LevelOne.swift */,
 				04ADCE151C92174E0039F6ED /* GameViewController.swift */,
 				04ADCE171C92174E0039F6ED /* Main.storyboard */,
-				044DEFE01DB00EF400CD9B51 /* GameOver.swift */,
 				04ADCE1A1C92174E0039F6ED /* Assets.xcassets */,
 				04ADCE1C1C92174E0039F6ED /* LaunchScreen.storyboard */,
 				04ADCE1F1C92174E0039F6ED /* Info.plist */,
@@ -154,7 +151,6 @@
 				04ADCE141C92174E0039F6ED /* GameScene.swift in Sources */,
 				04ADCE161C92174E0039F6ED /* GameViewController.swift in Sources */,
 				04ADCE101C92174E0039F6ED /* AppDelegate.swift in Sources */,
-				044DEFE11DB00EF400CD9B51 /* GameOver.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
